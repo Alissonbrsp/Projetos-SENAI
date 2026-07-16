@@ -1,0 +1,12 @@
+apiVersion: 1
+datasources:
+  - name: InfluxDB - CTF Sensors
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    database: ctf_sensors
+    user: influx_admin
+    secureJsonData:
+      password: "1nflux_S3cur3_P4ss!"
+    isDefault: true
+    editable: false

@@ -1,0 +1,32 @@
+[Unit]
+Description=CTF IIoT Backend (FastAPI/Uvicorn)
+After=network.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=exec
+User=ctf-backend
+Group=ctf-backend
+WorkingDirectory=/opt/ctf-backend
+EnvironmentFile=/opt/ctf-backend/.env
+ExecStart=/opt/ctf-backend/venv/bin/uvicorn main:app \
+    --host 127.0.0.1 \
+    --port 8000 \
+    --workers 2 \
+    --log-level info \
+    --access-log
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=ctf-backend
+
+# Segurança básica do processo
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ReadWritePaths=/opt/ctf-backend/logs /tmp
+
+[Install]
+WantedBy=multi-user.target
